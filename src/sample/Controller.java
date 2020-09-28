@@ -14,7 +14,12 @@ import java.util.Map;
 
 import static sample.Game.turn;
 
-public class Controller {
+public class Controller  {
+    @FXML
+    private ImageView imageView;
+
+
+
     @FXML
     GridPane gridPane;
 
@@ -114,6 +119,7 @@ public class Controller {
     @FXML
     void num32(MouseEvent event) { turn(7, 6); updateUI(); }
 
+
     Map<String, Image> listOfImages = new HashMap<>();
 
     public Controller() {
@@ -121,6 +127,14 @@ public class Controller {
             listOfImages.put("Черная", new Image(new FileInputStream("src\\resources\\black.png")));
             listOfImages.put("Белая", new Image(new FileInputStream("src\\resources\\white.png")));
             listOfImages.put("Ничего", new Image(new FileInputStream("src\\resources\\nothing.jpg")));
+            listOfImages.put("Черная подсвеченная", new Image(new FileInputStream("src\\resources\\blacklighted.png")));
+            listOfImages.put("Черная дамка", new Image(new FileInputStream("src\\resources\\blackqueen.png")));
+            listOfImages.put("Черная дамка подсвеченная", new Image(new FileInputStream("src\\resources\\blackqueenlighted.png")));
+            listOfImages.put("Белая подсвеченная", new Image(new FileInputStream("src\\resources\\whitelighted.png")));
+            listOfImages.put("Белая дамка", new Image(new FileInputStream("src\\resources\\whitequeen.png")));
+            listOfImages.put("Белая дамка подсвеченная", new Image(new FileInputStream("src\\resources\\whitequeenlighted.png")));
+            listOfImages.put("Ничего подсвеченное", new Image(new FileInputStream("src\\resources\\nothinglighted.jpg")));
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

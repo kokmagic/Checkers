@@ -24,14 +24,52 @@ public class Game {
     }
     public static void turn(int x, int y) {
         int color = board[x][y].getColor();
-        if (color == 1 && blackTurn) {
+        if (color == 1 && blackTurn && canMove(x, y)) {
             previousX = x;
             previousY = y;
         }
         if (color == 0) {
             board[previousX][previousY].setColor(0);
-            board[x][y].setColor(1);
+            if (blackTurn) board[x][y].setColor(1);
+            else board[x][y].setColor(2);
+            blackTurn = !blackTurn;
+            clear();
         }
+    }
 
+    public static boolean canMoveLeft(int x, int y) {
+        int color = board[x][y].getColor();
+        int delta;
+        if (color == 1) delta = 1;
+        else delta = -1;
+        if (board[x - 1][y + delta].getColor() == 0) {
+            board[x - 1][y + delta].setLight(true);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean canMoveRight(int x, int y) {
+        int color = board[x][y].getColor();
+        int delta;
+        if (color == 1) delta = 1;
+        else delta = -1;
+        if (board[x + 1][y + delta].getColor() == 0) {
+            board[x + 1][y + delta].setLight(true);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean canMove(int x, int y) {
+        return canMoveLeft(x, y) || canMoveRight(x, y);
+    }
+
+    public static void clear() {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                board[j][i].setLight(false);
+            }
+        }
     }
 }
