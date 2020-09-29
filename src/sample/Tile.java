@@ -39,7 +39,28 @@ public class Tile {
         if (color == 0 && light) return "Ничего подсвеченное";
         return "Ничего";
     }
+
     public void setLight(boolean light) {
         this.light = light;
+    }
+
+    public boolean getLight() {
+        return light;
+    }
+
+    public void setMustAttack(boolean mustAttack) {
+        this.mustAttack = mustAttack;
+    }
+
+    public boolean getMustAttack() {
+        return mustAttack;
+    }
+
+    public void setQueen(boolean queen) {
+        this.queen = queen;
+    }
+
+    public boolean getQueen() {
+        return queen;
     }
 }
