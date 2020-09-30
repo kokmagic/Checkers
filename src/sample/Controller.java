@@ -16,11 +16,6 @@ import static sample.Game.turn;
 
 public class Controller  {
     @FXML
-    private ImageView imageView;
-
-
-
-    @FXML
     GridPane gridPane;
 
     @FXML

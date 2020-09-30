@@ -24,53 +24,134 @@ public class Game {
     }
     public static void turn(int x, int y) {
         int color = board[x][y].getColor();
-        if (color == 1 && blackTurn && canMove(x, y)) {
+        if (color == 1 && blackTurn && isThereLights()) clear();
+        if (color == 2 && !blackTurn && isThereLights()) clear();
+        if (color == 1 && blackTurn && haveToAttackLeft(x, y) && haveToAttackRight(x, y)) {
+            board[x][y].setLight(true);
             previousX = x;
             previousY = y;
+        }
+        if (color == 1 && blackTurn && (haveToAttackLeft(x, y) || haveToAttackRight(x, y))) {
+            board[x][y].setLight(true);
+            previousX = x;
+            previousY = y;
+        }
+        if (color == 1 && blackTurn && (!haveToAttackLeft(x, y) && !haveToAttackRight(x, y))) {
+            if (canMoveRight(x, y) && canMoveLeft(x, y)) {
+                board[x][y].setLight(true);
+                previousX = x;
+                previousY = y;
+            }
+        }
+        if (color == 1 && blackTurn && (!haveToAttackLeft(x, y) && !haveToAttackRight(x, y))) {
+            if (canMoveRight(x, y) || canMoveLeft(x, y)) {
+                board[x][y].setLight(true);
+                previousX = x;
+                previousY = y;
+            }
+        }
+        if (color == 0 && board[x][y].getLight() && isThereAttacker()) {
+            if (blackTurn && haveToAttackLeft(previousX, previousY ) && board[x - 1][y + 1].getColor() == 2) {
+                board[previousX][previousY].setColor(0);
+                board[x][y].setColor(1);
+                board[x - 1][y + 1].setColor(0);
+                blackTurn = !blackTurn;
+                board[previousX][previousY].setMustAttack(false);
+                board[x][y].setMustAttack(false);
+                clear();
+            }
+            if (blackTurn && haveToAttackRight(previousX, previousY) && board[x - 1][y - 1].getColor() == 2) {
+                board[previousX][previousY].setColor(0);
+                board[x][y].setColor(1);
+                board[x - 1][y - 1].setColor(0);
+                blackTurn = !blackTurn;
+                board[previousX][previousY].setMustAttack(false);
+                board[x][y].setMustAttack(false);
+                clear();
+            }
+            if (!blackTurn && haveToAttackLeft(previousX, previousY ) && board[x + 1][y + 1].getColor() == 1) {
+                board[previousX][previousY].setColor(0);
+                board[x][y].setColor(2);
+                board[x + 1][y + 1].setColor(0);
+                blackTurn = !blackTurn;
+                board[previousX][previousY].setMustAttack(false);
+                board[x][y].setMustAttack(false);
+                clear();
+            }
+            if (!blackTurn && haveToAttackRight(previousX, previousY) && board[x + 1][y - 1].getColor() == 1) {
+                board[previousX][previousY].setColor(0);
+                board[x][y].setColor(2);
+                board[x + 1][y - 1].setColor(0);
+                blackTurn = !blackTurn;
+                board[previousX][previousY].setMustAttack(false);
+                board[x][y].setMustAttack(false);
+                clear();
+            }
         }
         if (color == 0 && board[x][y].getLight()) {
             board[previousX][previousY].setColor(0);
             if (blackTurn) board[x][y].setColor(1);
             else board[x][y].setColor(2);
             blackTurn = !blackTurn;
+            checkerReachedEnd(x, y);
             clear();
+        }
+        if (color == 2 && !blackTurn && haveToAttackLeft(x, y) && haveToAttackRight(x, y)) {
+            board[x][y].setLight(true);
+            previousX = x;
+            previousY = y;
+        }
+        if (color == 2 && !blackTurn && (haveToAttackLeft(x, y) || haveToAttackRight(x, y))) {
+            board[x][y].setLight(true);
+            previousX = x;
+            previousY = y;
+        }
+        if (color == 2 && !blackTurn && (!haveToAttackLeft(x, y) && !haveToAttackRight(x, y))) {
+            if (canMoveRight(x, y) && canMoveLeft(x, y)) {
+                board[x][y].setLight(true);
+                previousX = x;
+                previousY = y;
+            }
+        }
+        if (color == 2 && !blackTurn && (!haveToAttackLeft(x, y) && !haveToAttackRight(x, y))) {
+            if (canMoveRight(x, y) || canMoveLeft(x, y)) {
+                board[x][y].setLight(true);
+                previousX = x;
+                previousY = y;
+            }
         }
     }
 
     public static boolean canMoveLeft(int x, int y) {
-        if (x == 0) return false;
+        if (y == 0) return false;
         int color = board[x][y].getColor();
         int delta;
         if (color == 1) delta = 1;
         else delta = -1;
-        if (board[x - 1][y + delta].getColor() == 0) {
-            board[x - 1][y + delta].setLight(true);
+        if (board[x + delta][y - 1].getColor() == 0) {
+            board[x + delta][y - 1].setLight(true);
             return true;
         }
         return false;
     }
 
     public static boolean canMoveRight(int x, int y) {
-        if (x == 7) return false;
+        if (y == 7) return false;
         int color = board[x][y].getColor();
         int delta;
         if (color == 1) delta = 1;
         else delta = -1;
-        if (board[x + 1][y + delta].getColor() == 0) {
-            board[x + 1][y + delta].setLight(true);
+        if (board[x + delta][y + 1].getColor() == 0) {
+            board[x + delta][y + 1].setLight(true);
             return true;
         }
         return false;
     }
 
-    public static boolean canMove(int x, int y) {
-        return canMoveLeft(x, y) || canMoveRight(x, y);
-    }
-
     public static void clear() {
         for (int i = 0; i <= 7; i++) {
             for (int j = 0; j <= 7; j++) {
-                board[j][i].setLight(false);
+                if ((i + j) % 2 == 1) board[j][i].setLight(false);
             }
         }
     }
@@ -78,16 +159,16 @@ public class Game {
     public static boolean haveToAttackLeft(int x, int y) {
         int color = board[x][y].getColor();
         if (color == 1) {
-            if (x - 2 <= 0 && y + 2 <= 7) {
-                if (board[x - 1][y + 1].getColor() == 2 && board[x - 2][y + 2].getColor() == 0) {
+            if (y - 2 >= 0 && x + 2 <= 7) {
+                if (board[x + 1][y - 1].getColor() == 2 && board[x + 2][y - 2].getColor() == 0) {
                     board[x][y].setMustAttack(true);
-                    board[x - 2][y + 2].setLight(true);
+                    board[x + 2][y - 2].setLight(true);
                     return true;
                 }
             }
         }
         if (color == 2) {
-            if (x - 2 <= 0 && y - 2 <= 0) {
+            if (y - 2 >= 0 && x - 2 >= 0) {
                 if (board[x - 1][y - 1].getColor() == 1 && board[x - 2][y - 2].getColor() == 0) {
                     board[x][y].setMustAttack(true);
                     board[x - 2][y - 2].setLight(true);
@@ -101,7 +182,7 @@ public class Game {
     public static boolean haveToAttackRight (int x, int y) {
         int color = board[x][y].getColor();
         if (color == 1) {
-            if (x + 2 <= 7 && y + 2 <= 7) {
+            if (y + 2 <= 7 && x + 2 <= 7) {
                 if (board[x + 1][y + 1].getColor() == 2 && board[x + 2][y + 2].getColor() == 0) {
                     board[x][y].setMustAttack(true);
                     board[x + 2][y + 2].setLight(true);
@@ -110,10 +191,10 @@ public class Game {
             }
         }
         if (color == 2) {
-            if (x + 2 <= 7 && y - 2 <= 0) {
-                if (board[x + 1][y - 1].getColor() == 1 && board[x + 2][y - 2].getColor() == 0) {
+            if (y + 2 <= 7 && x - 2 >= 0) {
+                if (board[x - 1][y + 1].getColor() == 1 && board[x - 2][y + 2].getColor() == 0) {
                     board[x][y].setMustAttack(true);
-                    board[x - 2][y - 2].setLight(true);
+                    board[x - 2][y + 2].setLight(true);
                     return true;
                 }
             }
@@ -121,19 +202,31 @@ public class Game {
         return false;
     }
 
-    public static boolean haveToAttack(int x, int y) {
-        return haveToAttackLeft(x, y) || haveToAttackRight(x, y);
-    }
 
-    public static boolean checkerReachedEnd(int x, int y) {
+    public static void checkerReachedEnd(int x, int y) {
         int color = board[x][y].getColor();
         if (color == 1 && x == 7) {
             board[x][y].setQueen(true);
-            return true;
         }
         if (color == 2 && x == 0) {
             board[x][y].setQueen(true);
-            return true;
+        }
+    }
+
+    public static boolean isThereLights() {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                if ((i + j) % 2 == 1 && board[j][i].getLight()) return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isThereAttacker() {
+        for (int i = 0; i <= 7; i++) {
+            for (int j = 0; j <= 7; j++) {
+                if ((i + j) % 2 == 1 && board[j][i].getMustAttack()) return true;
+            }
         }
         return false;
     }
