@@ -5,12 +5,14 @@ public class Tile {
     boolean queen;
     boolean light;
     boolean mustAttack;
+    boolean globalAttack;
 
     public Tile(int color, boolean queen) {
         this.queen = queen;
         this.color = color;
         this.mustAttack = false;
         this.light = false;
+        this.globalAttack = false;
     }
 
     public int getColor() {
@@ -62,5 +64,13 @@ public class Tile {
 
     public boolean getQueen() {
         return queen;
+    }
+
+    public boolean getGlobalAttack() {
+        return globalAttack;
+    }
+
+    public void setGlobalAttack(boolean globalAttack) {
+        this.globalAttack = globalAttack;
     }
 }
