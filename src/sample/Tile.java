@@ -7,8 +7,16 @@ public class Tile {
     boolean mustAttack;
     boolean globalAttack;
 
-    public Tile(int color, boolean queen) {
+    public Tile(int color, boolean queen, boolean mustAttack, boolean globalAttack, boolean light) {
         this.queen = queen;
+        this.color = color;
+        this.mustAttack = mustAttack;
+        this.light = light;
+        this.globalAttack = globalAttack;
+    }
+
+    public Tile(int color) {
+        this.queen = false;
         this.color = color;
         this.mustAttack = false;
         this.light = false;
@@ -71,4 +79,13 @@ public class Tile {
     }
 
     public void setGlobalAttack(boolean globalAttack) { this.globalAttack = globalAttack; }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Tile obj = (Tile) o;
+        return color == obj.color && queen == obj.queen && mustAttack == obj.mustAttack && light == obj.light && globalAttack == obj.globalAttack;
+    }
+
 }
