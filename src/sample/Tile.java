@@ -70,7 +70,5 @@ public class Tile {
         return globalAttack;
     }
 
-    public void setGlobalAttack(boolean globalAttack) {
-        this.globalAttack = globalAttack;
-    }
+    public void setGlobalAttack(boolean globalAttack) { this.globalAttack = globalAttack; }
 }

@@ -23,6 +23,7 @@ public class Game {
             }
         }
     }
+
     public static void turn(int x, int y) {
         int color = board[x][y].getColor();
         checkerReachedEnd(x, y);
